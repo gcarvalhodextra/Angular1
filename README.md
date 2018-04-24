@@ -1,3 +1,4 @@
 # Angular1
-Run: npm install e depois npm start
-IntelliJ
+npm install<br/>
+npm start <br/>
+IntelliJ <br/>
