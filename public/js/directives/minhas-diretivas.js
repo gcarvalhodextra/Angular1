@@ -39,5 +39,13 @@ angular
         var ddo = {};
         ddo.templateUrl = 'js/directives/validade-msg.html';
         return ddo;
+    })
+    .directive('minhaFoto', function () {
+        var ddo = {};
+        ddo.scope = {
+            url: '@',
+            titulo: '@'
+        };
+        ddo.templateUrl = 'js/directives/minha-foto.html';
+        return ddo;
     });
-
