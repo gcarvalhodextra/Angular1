@@ -68,6 +68,21 @@ angular.module('alurapic').controller('FotosController', function($scope, $http)
   });
 });
 
+#Post - [file -> public/js/controllers/foto-controller.js]
+angular.module('alurapic')
+    .controller('FotoController', function ($scope, $http) {
+        $scope.foto = {};
+        $scope.submeter = function () {
+            $http.post('/v1/fotos', $scope.foto)
+                .success(function () {
+                    console.log('Foto adicionada com sucesso');
+                })
+                .error(function (erro) {
+                    console.log('Não foi possível cadastrar a foto');
+                })
+        };
+    });
+
 ********************************************************************
 #Repeat
 <div class="panel panel-default col-md-2" ng-repeat="foto in fotos">
@@ -210,8 +225,28 @@ angular.module('alurapic', ['minhasDiretivas', 'ngAnimate', 'ngRoute'])
 <h1>Cadastro</h1>
 
 ********************************************************************
+#Validar com a msg default
+<div class="form-group">
+    <label>Título</label>
+    <input name="titulo" class="form-control" ng-model="foto.titulo"  required>
+</div>
+
 ********************************************************************
+#Validar sem a msg default [file -> public/partials/foto.html]
+<form novalidade name="formulario" class="row" ng-submit="submeter()">
+<validate-message ng-show="formulario.$submitted && formulario.titulo.$error.required"></validate-message>
+
+[file -> public/js/directives/validade-msg.html]
+<span class="form-control alert-danger">
+    Campo obrigatório.
+</span>
+
 ********************************************************************
+#Desabilita quando não é valido
+<button type="submit" class="btn btn-primary" ng-disabled="formulario.$invalid">
+    Salvar
+</button>
+
 ********************************************************************
 ********************************************************************
 ********************************************************************

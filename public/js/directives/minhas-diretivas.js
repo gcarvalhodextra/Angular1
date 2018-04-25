@@ -34,5 +34,10 @@ angular
         ddo.templateUrl = 'js/directives/meu-painel.html';
 
         return ddo;
+    })
+    .directive('validateMessage', function () {
+        var ddo = {};
+        ddo.templateUrl = 'js/directives/validade-msg.html';
+        return ddo;
     });
 
