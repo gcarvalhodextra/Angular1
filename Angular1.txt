@@ -181,6 +181,34 @@ angular.module('alurapic').controller('FotosController', function ($scope, $http
     </meu-painel>
 
 ********************************************************************
+#Rotas
+[file -> public/index.html]
+Adicionar ->
+<base href="/">
+<script src="js/lib/angular-route.min.js"></script>
+<div class="container">
+    <ng-view></ng-view>
+</div>
+
+[file -> public/js/main.js]
+angular.module('alurapic', ['minhasDiretivas', 'ngAnimate', 'ngRoute'])
+    .config(function ($routeProvider, $locationProvider) {
+        // Remove o # do link partials
+        $locationProvider.html5Mode(true);
+        $routeProvider
+            .when('/fotos', {
+                templateUrl: 'partials/principal.html',
+                controller: 'FotosController'
+            })
+            .when('/fotos/new', {
+                templateUrl: 'partials/foto.html'
+            })
+            .otherwise({redirectTo: '/fotos'});
+    });
+
+[file -> public/partials/foto.html]
+<h1>Cadastro</h1>
+
 ********************************************************************
 ********************************************************************
 ********************************************************************
