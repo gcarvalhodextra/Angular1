@@ -1,5 +1,12 @@
 // Nome do modulo sem dependencia, na criação não pode omitir o []
-angular.module('alurapic', ['minhasDiretivas', 'ngAnimate', 'ngRoute'])
+angular.module(
+    'alurapic', [
+        'minhasDiretivas',
+        'ngAnimate',
+        'ngRoute',
+        'ngResource',
+        'meusServicos'
+    ])
     .config(function ($routeProvider, $locationProvider) {
         // Remove o # do link partials
         $locationProvider.html5Mode(true);

@@ -55,6 +55,8 @@ angular.module('alurapic').controller('FotosController', function($scope) {
       alt="{{foto.titulo}}">
 
 ********************************************************************
+Utilizando $http
+********************************************************************
 #Get - [file -> js\controllers\fotos-controller.js]
 angular.module('alurapic').controller('FotosController', function($scope, $http) {
 ...
@@ -98,6 +100,53 @@ $http.delete('/v1/fotos/' + foto._id)
     .error(function (erro) {
         $scope.mensagem = 'Não foi possível apagar a foto ' + foto.titulo;
     });
+
+Utilizando arquivo de service
+********************************************************************
+[file -> public/js/services/meus-servicos.js] - Add ele no main
+// Ele sabe se é insert ou update
+angular.module('meusServicos', ['ngResource'])
+    .factory('urlFoto', function($resource) {
+        return $resource('/v1/fotos/:fotoId', null, {
+            'update' : {
+                method: 'PUT'
+            }
+        });
+    });
+angular.module('alurapic').controller('FotosController', function ($scope, urlFoto) {
+
+#Get
+urlFoto.get({fotoId: $routeParams.fotoId}, function (foto) {
+    $scope.foto = foto;
+}, function (erro) {
+    $scope.mensagem = 'Não foi possível obter a foto' + erro;
+});
+
+#Delete
+urlFoto.delete({fotoId: foto._id}, function () {
+    var indiceDaFoto = $scope.fotos.indexOf(foto);
+    $scope.fotos.splice(indiceDaFoto, 1);
+    $scope.mensagem = 'Foto ' + foto.titulo + ' removida com sucesso!';
+}, function (erro) {
+    $scope.mensagem = 'Não foi possível apagar a foto ' + foto.titulo + erro;
+});
+
+#Post
+urlFoto.save($scope.foto, function () {
+    $scope.foto = {};
+    $scope.mensagem = 'Foto cadastrada com sucesso';
+}, function (erro) {
+    $scope.mensagem = 'Não foi possível cadastrar a foto' + erro;
+});
+
+#Put - update
+urlFoto.update(
+  {fotoId: $scope.foto._id}, $scope.foto, function () {
+      $scope.mensagem = 'Foto alterada com sucesso';
+  }, function () {
+      console.log(erro);
+      $scope.mensagem = 'Não foi possível alterar' + erro;
+  });
 
 ********************************************************************
 #Repeat

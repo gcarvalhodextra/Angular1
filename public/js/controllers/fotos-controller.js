@@ -1,5 +1,6 @@
 // $scope - Deixa o controller visivel para a view
-angular.module('alurapic').controller('FotosController', function ($scope, $http) {
+//angular.module('alurapic').controller('FotosController', function ($scope, $http) {
+angular.module('alurapic').controller('FotosController', function ($scope, urlFoto) {
     /*
     $scope.fotos = [
         {
@@ -20,6 +21,8 @@ angular.module('alurapic').controller('FotosController', function ($scope, $http
     $scope.mensagem = '';
     $scope.filtro = '';
     $scope.fotos = [];
+
+    /*
     $http.get('/v1/fotos')
         .success(function (response) {
             $scope.fotos = response;
@@ -27,7 +30,16 @@ angular.module('alurapic').controller('FotosController', function ($scope, $http
         .error(function (erro) {
             console.log(erro);
         });
+    */
 
+    // Get
+    urlFoto.query(function (fotos) {
+        $scope.fotos = fotos;
+    }, function (erro) {
+        console.log(erro);
+    });
+
+    /*
     $scope.remover = function (foto) {
         $http.delete('/v1/fotos/' + foto._id)
             .success(function () {
@@ -42,5 +54,17 @@ angular.module('alurapic').controller('FotosController', function ($scope, $http
                 console.log('Não foi possível apagar a foto ' + foto.titulo);
                 $scope.mensagem = 'Não foi possível apagar a foto ' + foto.titulo;
             });
+    };
+    */
+
+    // Delete
+    $scope.remover = function (foto) {
+        urlFoto.delete({fotoId: foto._id}, function () {
+            var indiceDaFoto = $scope.fotos.indexOf(foto);
+            $scope.fotos.splice(indiceDaFoto, 1);
+            $scope.mensagem = 'Foto ' + foto.titulo + ' removida com sucesso!';
+        }, function (erro) {
+            $scope.mensagem = 'Não foi possível apagar a foto ' + foto.titulo + erro;
+        });
     };
 });
