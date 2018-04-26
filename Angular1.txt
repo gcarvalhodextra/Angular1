@@ -248,7 +248,30 @@ angular.module('alurapic', ['minhasDiretivas', 'ngAnimate', 'ngRoute'])
 </button>
 
 ********************************************************************
+#Pasando informações do form para o controller
+[file -> public/partials/principal.html]
+<button class="btn btn-danger btn-block" ng-click="remover(foto)">Remover</button>
+
+[file -> public/js/controllers/fotos-controller.js]
+$scope.remover = function (foto) {}
+
 ********************************************************************
+#Passando parametros na URL
+[file -> public/partials/principal.html]
+<a class="btn btn-primary btn-block" href="/fotos/edit/{{foto._id}}">Editar</a>
+
+[file -> public/js/main.js]
+.when('/fotos/edit/:fotoId', {
+    templateUrl: 'partials/foto.html',
+    controller: 'FotoController'
+})
+
+[file -> public/js/controllers/foto-controller.js]
+angular.module('alurapic')
+    .controller('FotoController', function ($scope, $http, $routeParams) {
+      if ($routeParams.fotoId) {...}
+}
+
 ********************************************************************
 ********************************************************************
 ********************************************************************
