@@ -289,7 +289,35 @@ angular.module('alurapic')
 }
 
 ********************************************************************
+#Combobox
+<select name="grupo"
+        ng-model="foto.grupo" class="form-control" required
+        ng-controller="GruposController"
+        ng-options="grupo._id as grupo.nome for grupo in grupos">
+    <option value="">Escolha um grupo</option>
+    <!-- grupo._id - Value | grupo.nome - O que exibe -->
+</select>
+
 ********************************************************************
+#Passando String e função para a diretiva
+[file -> public/partials/principal.html]
+<meu-botao-perigo nome="Remover" acao="remover(foto)"></meu-botao-perigo>
+
+[file -> public/js/directives/minhas-diretivas.js]
+.directive('meuBotaoPerigo', function () {
+        var ddo = {};
+        ddo.restrict = "E";
+        ddo.scope = {
+            nome: '@', // Passa uma string
+            acao: '&'  // Passa uma função
+        };
+        ddo.template = '<button class="btn btn-danger btn-block" ng-click="acao()">{{nome}}</button>';
+        return ddo;
+    });
+
+[file -> public/js/controllers/fotos-controller.js] Nesse caso ele executa o remover
+$scope.remover = function (foto) {...}
+
 ********************************************************************
 ********************************************************************
 ********************************************************************
