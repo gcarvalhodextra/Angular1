@@ -17,15 +17,17 @@ angular.module('alurapic')
 
         $scope.submeter = function () {
             if ($routeParams.fotoId) {
+                // Update
                 $http.put('/v1/fotos/' + $scope.foto._id, $scope.foto)
                     .success(function () {
-                        $scope.mensagem = 'Foto alterada com sucesso';
+                        $scope.mensagem = 'Foto ' + $scope.foto.titulo + ' alterada com sucesso!';
 
                     })
                     .error(function (erro) {
                         $scope.mensagem = 'Não foi possível alterar, ' + erro;
                     });
             } else {
+                // Insert
                 $http.post('/v1/fotos', $scope.foto)
                     .success(function () {
                         $scope.foto = {};

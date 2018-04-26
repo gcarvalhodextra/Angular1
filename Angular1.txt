@@ -69,18 +69,34 @@ angular.module('alurapic').controller('FotosController', function($scope, $http)
 });
 
 #Post - [file -> public/js/controllers/foto-controller.js]
-angular.module('alurapic')
-    .controller('FotoController', function ($scope, $http) {
-        $scope.foto = {};
-        $scope.submeter = function () {
-            $http.post('/v1/fotos', $scope.foto)
-                .success(function () {
-                    console.log('Foto adicionada com sucesso');
-                })
-                .error(function (erro) {
-                    console.log('Não foi possível cadastrar a foto');
-                })
-        };
+$http.post('/v1/fotos', $scope.foto)
+    .success(function () {
+        console.log('Foto adicionada com sucesso');
+    })
+    .error(function (erro) {
+        console.log('Não foi possível cadastrar a foto');
+    });
+
+#Put(Update) - [file -> public/js/controllers/foto-controller.js]
+$http.put('/v1/fotos/' + $scope.foto._id, $scope.foto)
+    .success(function () {
+        $scope.mensagem = 'Foto ' + $scope.foto.titulo + ' alterada com sucesso!';
+
+    })
+    .error(function (erro) {
+        $scope.mensagem = 'Não foi possível alterar, ' + erro;
+    });
+
+#Delete - [file -> public/js/controllers/fotos-controller.js]
+$http.delete('/v1/fotos/' + foto._id)
+    .success(function () {
+        // Remove a foto do array
+        var indiceDaFoto = $scope.fotos.indexOf(foto);
+        $scope.fotos.splice(indiceDaFoto, 1);
+        $scope.mensagem = 'Foto ' + foto.titulo + ' removida com sucesso!';
+    })
+    .error(function (erro) {
+        $scope.mensagem = 'Não foi possível apagar a foto ' + foto.titulo;
     });
 
 ********************************************************************
