@@ -48,4 +48,51 @@ angular
         };
         ddo.templateUrl = 'js/directives/minha-foto.html';
         return ddo;
+    })
+    .directive('meuFocus', function () {
+        var ddo = {};
+        ddo.restrict = "A";
+        // Se mudar no controller muda na diretiva
+        /*
+        ddo.scope = {
+            focado: '='
+        };
+        */
+
+        /*
+        // Fica escutando
+        ddo.link = function (scope, element) {
+            scope.$watch('focado', function () {
+                // Executado toda vez que o valor mudar,
+                if (scope.focado) {
+                    // Se mudou e é verdadeiro, o elemento deve ganhar o foco
+                    element[0].focus();
+                    scope.focado = false;
+                }
+            });
+        };
+        */
+
+        // Fica escutando
+        ddo.link = function (scope, element) {
+            scope.$on('fotoCadastrada', function () {
+                element[0].focus();
+            });
+        };
+
+        return ddo;
+    })
+    .directive('meusTitulos', function () {
+        // Preenche uma lista de titulos, legal para utilizar em filters
+        var ddo = {};
+        ddo.restrict = 'E';
+        ddo.template = '<ul><li ng-repeat="titulo in titulos">{{titulo}}</li></ul>';
+        ddo.controller = function ($scope, recursoFoto) {
+            recursoFoto.query(function (fotos) {
+                $scope.titulos = fotos.map(function (foto) {
+                    return foto.titulo;
+                });
+            });
+        };
+        return ddo;
     });

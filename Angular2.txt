@@ -1,0 +1,106 @@
+********************************************************************
+#Dar foco no BTN voltar
+[file -> public/js/directives/minhas-diretivas.js]
+.directive('meuFocus', function () {
+    var ddo = {};
+    ddo.restrict = "A";
+    // Se mudar no controller muda na diretiva
+    ddo.scope = {
+        focado: '='
+    };
+    // Fica escutando
+    ddo.link = function (scope, element) {
+        scope.$watch('focado', function () {
+            // Executado toda vez que o valor mudar,
+            if (scope.focado) {
+                // Se mudou e é verdadeiro, o elemento deve ganhar o foco
+                element[0].focus();
+                scope.focado = false;
+            }
+        });
+    };
+    return ddo;
+});
+
+#Quando fazer o submit no controller alterar a variavel - [file -> public/js/controllers/foto-controller.js]
+scope.focado = false;
+
+#Fazer o foco no HTML - [file -> public/partials/foto.html]
+<a href="/" meu-focus focado="focado" class="btn btn-primary">Voltar</a>
+********************************************************************
+#Da para usar de outra forma tb, essa tem mais performance
+#Não precisa fazer nada no controller
+
+#Fazer o foco no HTML - [file -> public/partials/foto.html]
+<a href="/" meu-focus class="btn btn-primary">Voltar</a>
+
+#Fazer o foco no service [file -> ]
+.factory("cadastroDeFotos", function(recursoFoto, $q, $rootScope) {}
+var evento = 'fotoCadastrada';
+// Seta positivo
+$rootScope.$broadcast(evento);
+
+[file -> public/js/directives/minhas-diretivas.js]
+.directive('meuFocus', function () {
+    var ddo = {};
+    ddo.restrict = "A";
+    ddo.link = function(scope, element) {
+        // Quando mudar - recebe o positivo passando para o HTML
+        scope.$on('fotoCadastrada', function() {
+            element[0].focus();
+        });
+    };
+    return ddo;
+});
+
+********************************************************************
+#Perguntas "@ & ="
+********************************************************************
+Usamos @ quando queremos realizar uma cópia do valor
+passado para a diretiva no HTML para dentro do escopo isolado na diretiva.
+Essa cópia é sempre um valor em string.
+********************************************************************
+Usamos & geralmente quando queremos executar dentro de uma diretiva
+uma função que pertence a um escopo pai ou de um controller.
+********************************************************************
+Usamos = quando queremos que tanto a diretiva quanto o controller
+acessem o mesmo dado, isto é, qualquer alteração no escopo privado
+da diretiva afetará a propriedade do controller e qualquer alteração
+nesta propriedade no controller afetará a diretiva.
+Temos aqui uma comunicação bidirecional.
+
+********************************************************************
+#Blindando-se contra minificação
+Alterar os controllers
+angular.module('alurapic')
+    .controller(
+      'FotoController',
+          ['$scope', 'recursoFoto', '$routeParams', 'cadastroDeFotos',
+          function($scope, recursoFoto, $routeParams, cadastroDeFotos) {}
+          ]
+);
+
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************
+********************************************************************

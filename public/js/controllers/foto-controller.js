@@ -10,7 +10,6 @@ angular.module('alurapic')
                     $scope.foto = foto;
                 })
                 .error(function (erro) {
-                    console.log(erro);
                     $scope.mensagem = 'Não foi possível obter a foto'
                 });
         }
@@ -20,7 +19,7 @@ angular.module('alurapic')
                 $http.put('/v1/fotos/' + $scope.foto._id, $scope.foto)
                     .success(function () {
                         $scope.mensagem = 'Foto alterada com sucesso';
-
+                        //$scope.focado = true;
                     })
                     .error(function (erro) {
                         $scope.mensagem = 'Não foi possível alterar, ' + erro;
@@ -30,11 +29,10 @@ angular.module('alurapic')
                     .success(function () {
                         $scope.foto = {};
                         $scope.mensagem = 'Foto adicionada com sucesso!';
-                        console.log('Foto adicionada com sucesso');
+                        //$scope.focado = true;
                     })
                     .error(function (erro) {
                         $scope.mensagem = 'Não foi possível cadastrar a foto, ' + erro;
-                        console.log('Não foi possível cadastrar a foto');
                     })
             }
         };
