@@ -7,7 +7,7 @@ angular.module('servicos', ['ngResource'])
             }
         });
     })
-    .factory("fotosService", function (urlFoto, $q) {
+    .factory("fotosService", function (urlFoto, $q, $rootScope) {
         var service = {};
 
         service.cadastrar = foto => {
@@ -15,6 +15,8 @@ angular.module('servicos', ['ngResource'])
             return $q(function (resolve, reject) {
                 if (foto._id) {
                     urlFoto.update({fotoId: foto._id}, foto, function () {
+                        // Focus no voltar
+                        $rootScope.$broadcast('fotoCadastrada');
                         resolve({
                             /*Eu posso escolher os itens do retorno*/
                             mensagem: 'Foto ' + foto.titulo + ' atualizada com sucesso',
@@ -27,6 +29,8 @@ angular.module('servicos', ['ngResource'])
                     });
                 } else {
                     urlFoto.save(foto, function () {
+                        // Focus no voltar
+                        $rootScope.$broadcast('fotoCadastrada');
                         resolve({
                             mensagem: 'Foto ' + foto.titulo + ' incluída com sucesso',
                             inclusao: true
