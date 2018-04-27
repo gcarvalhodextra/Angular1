@@ -1,6 +1,6 @@
 // $scope - Deixa o controller visivel para a view
 angular.module('alurapic')
-    .controller('FotoController', function ($scope, urlFoto, $routeParams) {
+    .controller('FotoController', function ($scope, urlFoto, $routeParams, fotosService) {
         //.controller('FotoController', function ($scope, $http, $routeParams) {
         $scope.mensagem = '';
         $scope.foto = {};
@@ -19,11 +19,13 @@ angular.module('alurapic')
 
         // Get
         if ($routeParams.fotoId) {
-            urlFoto.get({fotoId: $routeParams.fotoId}, function (foto) {
-                $scope.foto = foto;
-            }, function (erro) {
-                $scope.mensagem = 'Não foi possível obter a foto' + erro;
-            });
+            fotosService.get($routeParams.fotoId)
+                .then(function (dados) {
+                    $scope.foto = dados.foto;
+                })
+                .catch(function (erro) {
+                    $scope.mensagem = erro.mensagem;
+                });
         }
 
         /*
@@ -55,23 +57,17 @@ angular.module('alurapic')
         */
 
         $scope.submeter = function () {
-            if (!$routeParams.fotoId) {
-                // Insert (POST)
-                urlFoto.save($scope.foto, function () {
-                    $scope.foto = {};
-                    $scope.mensagem = 'Foto cadastrada com sucesso';
-                }, function (erro) {
-                    $scope.mensagem = 'Não foi possível cadastrar a foto' + erro;
-                });
-            } else {
-                // Update (PUT)
-                urlFoto.update(
-                    {fotoId: $scope.foto._id}, $scope.foto, function () {
-                        $scope.mensagem = 'Foto alterada com sucesso';
-                    }, function () {
-                        console.log(erro);
-                        $scope.mensagem = 'Não foi possível alterar' + erro;
-                    });
+            // Verifica se o formulário é valido
+            if (!$scope.formulario.$valid) {
+                return;
             }
+            fotosService.cadastrar($scope.foto)
+                .then(function (dados) {
+                    $scope.mensagem = dados.mensagem;
+                    if (dados.inclusao) $scope.foto = {};
+                })
+                .catch(function (erro) {
+                    $scope.mensagem = erro.mensagem;
+                });
         };
     });

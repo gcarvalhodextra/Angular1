@@ -5,7 +5,7 @@ angular.module(
         'ngAnimate',
         'ngRoute',
         'ngResource',
-        'meusServicos'
+        'servicos'
     ])
     .config(function ($routeProvider, $locationProvider) {
         // Remove o # do link partials
